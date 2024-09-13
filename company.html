@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Company Dashboard</title>
+    <style>
+        body {
+            background-image: url("company_image.png");
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #5b9697;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .navbar-brand {
+         display: flex;
+         align-items: center;
+        }
+        .navbar-brand img {
+          height: 50px; /* Adjust as needed */
+         margin-right: 10px;
+         border-radius: 50%;
+        }
+        .navbar-brand-text {
+         font-size: 1.5em;
+         font-weight: bold;
+         }
+        .nav-link {
+            text-decoration: none;
+            color: black;
+            margin-left: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            padding: 10px;
+            font-weight: bold;
+        }
+        .card-body {
+            padding: 15px;
+        }
+        .list-group {
+            list-style-type: none;
+            padding: 0;
+        }
+        .list-group-item {
+            border: 1px solid #ddd;
+            margin-bottom: -1px;
+            padding: 10px;
+            background-color: #fff;
+        }
+        .task-list {
+            margin-top: 20px;
+        }
+        .task-item {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .task-item h4 {
+            margin-top: 0;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <img src="company_logo.png" alt="NextTech Solutions Logo">
+            <span class="navbar-brand-text">NextTech Solutions</span>
+        </div>
+        <div>
+            <a href="#" class="nav-link" id="homeLink">Home</a>
+            <a href="#" class="nav-link" id="dashboardLink">Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container" id="mainContent">
+        <!-- Content will be dynamically inserted here -->
+    </div>
+
+    <script>
+        // DOM Elements
+        const mainContent = document.getElementById('mainContent');
+        const dashboardLink = document.getElementById('dashboardLink');
+        const homeLink = document.getElementById('homeLink');
+
+        // Mock Data
+        const teams = [
+            { name: 'Team Alpha', members: ['John', 'Jane', 'Bob', 'Alice'], task: 'Develop new feature X' },
+            { name: 'Team Beta', members: ['Mike', 'Sarah', 'Tom', 'Emily'], task: 'Bug fixing for module Y' },
+            { name: 'Team Gamma', members: ['David', 'Lisa', 'Chris', 'Emma'], task: 'Refactor database schema' },
+        ];
+
+        const employees = [
+            {
+                name: 'John Doe',
+                team: 'Team Alpha',
+                pendingTasks: ['Implement user authentication', 'Design database schema'],
+                completedTasks: ['Set up project repository', 'Create initial project structure']
+            },
+            {
+                name: 'Jane Smith',
+                team: 'Team Beta',
+                pendingTasks: ['Fix login bug', 'Optimize database queries'],
+                completedTasks: ['Update user interface', 'Write unit tests']
+            }
+        ];
+
+        // Utility Functions
+        function setContent(html) {
+            mainContent.innerHTML = html;
+        }
+
+        function createCard(title, content) {
+            return `
+                <div class="card">
+                    <div class="card-header">${title}</div>
+                    <div class="card-body">${content}</div>
+                </div>
+            `;
+        }
+
+        // Page Content Functions
+        function showAboutUs() {
+            const content = `
+                <h2 style="text-align: center;">About Us</h2>
+                ${createCard('', `
+                    <p>Welcome to NextTech Solutions, a leading software development company dedicated to creating innovative solutions for businesses worldwide.</p>
+                    <p>Our team of expert developers, designers, and project managers work tirelessly to deliver high-quality software products that meet and exceed our clients' expectations.</p>
+                    <p>With a focus on cutting-edge technologies and agile methodologies, we strive to stay at the forefront of the ever-evolving tech landscape.</p>
+                    <p>At NextTech Solutions, we believe in fostering a culture of creativity, collaboration, and continuous learning. Our passion for technology and commitment to excellence drive us to tackle complex challenges and turn ideas into reality.</p>
+                `)}
+            `;
+            setContent(content);
+        }
+
+        function showLoginOptions() {
+            const content = `
+                <h2 style="text-align: center;">Login Options</h2>
+                <div style="text-align: center;">
+                    <a href="#" class="btn" id="adminLoginBtn">Login as Admin</a>
+                    <a href="#" class="btn btn-secondary" id="employeeLoginBtn">Login as Employee</a>
+                </div>
+            `;
+            setContent(content);
+            document.getElementById('adminLoginBtn').addEventListener('click', showAdminLogin);
+            document.getElementById('employeeLoginBtn').addEventListener('click', showEmployeeLogin);
+        }
+
+        function showAdminLogin() {
+            const content = `
+                <h2 style="text-align: center;">Admin Login</h2>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+            `;
+            setContent(content);
+            document.getElementById('adminLoginForm').addEventListener('submit', handleAdminLogin);
+        }
+
+        function showEmployeeLogin() {
+            const content = `
+                <h2 style="text-align: center;">Employee Login</h2>
+                <form id="employeeLoginForm">
+                    <div class="form-group">
+                        <label for="employeeUsername">Username</label>
+                        <input type="text" id="employeeUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeePassword">Password</label>
+                        <input type="password" id="employeePassword" required>
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+            `;
+            setContent(content);
+            document.getElementById('employeeLoginForm').addEventListener('submit', handleEmployeeLogin);
+        }
+
+        function showAdminDashboard() {
+            let content = '<h2 style="text-align: center;">Admin Dashboard</h2>';
+            teams.forEach(team => {
+                content += createCard(team.name, `
+                    <h5>Task: ${team.task}</h5>
+                    <p>Team Members:</p>
+                    <ul class="list-group">
+                        ${team.members.map(member => `<li class="list-group-item">${member}</li>`).join('')}
+                    </ul>
+                `);
+            });
+            setContent(content);
+        }
+
+        function showEmployeeDashboard(employeeName) {
+            const employee = employees.find(emp => emp.name === employeeName) || employees[0];
+            const content = `
+                <h2 style="text-align: center;">Employee Dashboard</h2>
+                ${createCard('Employee Information', `
+                    <h3>Welcome, ${employee.name}!</h3>
+                    <p>Team: ${employee.team}</p>
+                    
+                    <div class="task-list">
+                        <h4>Pending Tasks:</h4>
+                        ${employee.pendingTasks.map(task => `
+                            <div class="task-item">
+                                <h4>${task}</h4>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="task-list">
+                        <h4>Completed Tasks:</h4>
+                        ${employee.completedTasks.map(task => `
+                            <div class="task-item completed">
+                                <h4>${task}</h4>
+                            </div>
+                        `).join('')}
+                    </div>
+                `)}
+            `;
+            setContent(content);
+        }
+
+        // Event Handlers
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            console.log('Admin login attempt:', { username, password });
+            showAdminDashboard();
+        }
+
+        function handleEmployeeLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('employeeUsername').value;
+            const password = document.getElementById('employeePassword').value;
+            console.log('Employee login attempt:', { username, password });
+            showEmployeeDashboard(username);
+        }
+
+        // Event Listeners
+        dashboardLink.addEventListener('click', showLoginOptions);
+        homeLink.addEventListener('click', showAboutUs);
+
+        // Initial Setup
+        showAboutUs();
+    </script>
+</body>
+</html>
